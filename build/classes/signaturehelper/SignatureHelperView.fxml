@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="AnchorPane" prefHeight="774.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="signaturehelper.SignatureHelperController">
+    <stylesheets>
+        <URL value="@signaturehelper.css" />
+    </stylesheets>
+   <children>
+      <Button layoutX="30.0" layoutY="33.0" mnemonicParsing="false" onAction="#selectFiles" text="Select Files" />
+      <ListView fx:id="selectedFilesListView" layoutX="30.0" layoutY="79.0" prefHeight="265.0" prefWidth="544.0" />
+      <ListView fx:id="outputListView" layoutX="28.0" layoutY="464.0" prefHeight="265.0" prefWidth="544.0" />
+      <Label layoutX="252.0" layoutY="447.0" text="Output Preview" />
+      <Button layoutX="464.0" layoutY="735.0" mnemonicParsing="false" onAction="#changeFiles" text="Make It Happen!!" />
+      <RadioButton fx:id="radio4to8" layoutX="38.0" layoutY="361.0" mnemonicParsing="false" onAction="#populateOutputPreview" text="4pg to 8pg" />
+      <RadioButton fx:id="radio2to8" layoutX="137.0" layoutY="361.0" mnemonicParsing="false" onAction="#populateOutputPreview" text=" 2pg to 8pg - Not Yet Implemented" />
+      <TextField fx:id="pubcodeField" layoutX="30.0" layoutY="418.0" onKeyReleased="#populateOutputPreview" />
+      <Label layoutX="63.0" layoutY="397.0" text="PUBCODE" />
+      <TextField fx:id="dateField" layoutX="200.0" layoutY="418.0" onKeyReleased="#populateOutputPreview" />
+      <Label layoutX="252.0" layoutY="397.0" text="Date" />
+      <TextField fx:id="zoneField" layoutX="369.0" layoutY="418.0" onKeyReleased="#populateOutputPreview" text="P" />
+      <Label layoutX="421.0" layoutY="397.0" text="Zone" />
+   </children>
+</AnchorPane>
