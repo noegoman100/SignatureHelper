@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package signaturehelper;
 
 import java.io.File;
@@ -67,51 +62,60 @@ public class SignatureHelperController implements Initializable {
     public void populateOutputPreview(){
         ObservableList<File> tempFiles = FXCollections.observableArrayList();
         tempFiles.setAll(selectedFiles);
+        outputListView.getItems().clear();
         
-        if (radio2to8.isSelected()){
-            ObservableList<String> tempList = FXCollections.observableArrayList();
-            System.out.println("radio2to8 processing...");
-            outputFiles.clear();
-            outputFiles.add(new File("2to8-1"));
-            outputFiles.add(new File("2to8-2"));
-            outputFiles.add(new File("2to8-3"));
-            outputFiles.add(new File("2to8-4"));
-            
-            outputListView.setItems(tempList);
-            return;
-        }
-        if (radio4to8.isSelected()){
-            System.out.println("radio4to8 processing...");
-            outputFiles.clear();
-            //outputFiles =  FXCollections.observableArrayList();
-//            outputFiles.add(new File("4to8-1"));
-//            outputFiles.add(new File("4to8-2"));
-//            outputFiles.add(new File("4to8-3"));
-//            outputFiles.add(new File("4to8-4")); 
-            ObservableList<String> tempList = FXCollections.observableArrayList();
+        if (radio2to8.isSelected() && !selectedFiles.isEmpty()){
+            if (selectedFiles.size() == 2){
+                ObservableList<String> tempList = FXCollections.observableArrayList();
+                System.out.println("radio2to8 processing...");
+                outputFiles.clear();
+                ObservableList<String> tempList2 = FXCollections.observableArrayList();
 
-            
-            outputFiles.add(0, tempFiles.get(0));
-            outputFiles.add(1, tempFiles.get(1));
-            outputFiles.add(2, tempFiles.get(1));
-            outputFiles.add(3, tempFiles.get(0));
-            outputFiles.add(4, tempFiles.get(3));
-            outputFiles.add(5, tempFiles.get(2));
-            outputFiles.add(6, tempFiles.get(2));
-            outputFiles.add(7, tempFiles.get(3));
-            //outputFiles.addAll(outputFiles);
-            //new File(" " + tempFiles.get(0).toString())
-            tempList.add(0, tempFiles.get(0).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-001.pdf"); 
-            tempList.add(1, tempFiles.get(1).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-002.pdf"); 
-            tempList.add(2, tempFiles.get(1).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-003.pdf"); 
-            tempList.add(3, tempFiles.get(0).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-004.pdf"); 
-            tempList.add(4, tempFiles.get(3).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-005.pdf"); 
-            tempList.add(5, tempFiles.get(2).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-006.pdf"); 
-            tempList.add(6, tempFiles.get(2).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-007.pdf"); 
-            tempList.add(7, tempFiles.get(3).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-008.pdf");     
-            
-            outputListView.setItems(tempList);
-            
+
+                outputFiles.add(0, tempFiles.get(0));
+                outputFiles.add(1, tempFiles.get(1));
+
+                //outputFiles.addAll(outputFiles);
+                //new File(" " + tempFiles.get(0).toString())
+                tempList2.add(0, tempFiles.get(0).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-001.pdf"); 
+                tempList2.add(1, tempFiles.get(0).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-004.pdf"); 
+                tempList2.add(2, tempFiles.get(0).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-005.pdf"); 
+                tempList2.add(3, tempFiles.get(0).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-008.pdf"); 
+                tempList2.add(4, tempFiles.get(1).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-003.pdf"); 
+                tempList2.add(5, tempFiles.get(1).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-006.pdf"); 
+                tempList2.add(6, tempFiles.get(1).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-007.pdf"); 
+                tempList2.add(7, tempFiles.get(1).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-002.pdf");     
+
+                outputListView.setItems(tempList2);
+            }//End Nested If
+            return;
+        }//End If
+        if (radio4to8.isSelected() && !selectedFiles.isEmpty()){
+            if (selectedFiles.size() == 4){
+                System.out.println("radio4to8 processing...");
+                outputFiles.clear();
+                ObservableList<String> tempList = FXCollections.observableArrayList();
+
+                outputFiles.add(0, tempFiles.get(0));
+                outputFiles.add(1, tempFiles.get(1));
+                outputFiles.add(2, tempFiles.get(1));
+                outputFiles.add(3, tempFiles.get(0));
+    //            outputFiles.add(4, tempFiles.get(3));
+    //            outputFiles.add(5, tempFiles.get(2));
+    //            outputFiles.add(6, tempFiles.get(2));
+    //            outputFiles.add(7, tempFiles.get(3));
+
+                tempList.add(0, tempFiles.get(0).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-001.pdf"); 
+                tempList.add(1, tempFiles.get(1).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-002.pdf"); 
+                tempList.add(2, tempFiles.get(1).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-003.pdf"); 
+                tempList.add(3, tempFiles.get(0).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-004.pdf"); 
+                tempList.add(4, tempFiles.get(3).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-005.pdf"); 
+                tempList.add(5, tempFiles.get(2).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-006.pdf"); 
+                tempList.add(6, tempFiles.get(2).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-007.pdf"); 
+                tempList.add(7, tempFiles.get(3).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-008.pdf");     
+
+                outputListView.setItems(tempList);
+            }//End Nested If
             return;
         }
 
@@ -119,12 +123,27 @@ public class SignatureHelperController implements Initializable {
     }
     @FXML public void changeFiles(ActionEvent e){
         
-        if (radio2to8.isSelected()){
+        if (radio2to8.isSelected() && !selectedFiles.isEmpty()){
+            outputFiles.get(0).renameTo(new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-001.pdf"));
+            outputFiles.get(1).renameTo(new File(outputFiles.get(1).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-002.pdf"));
+            try {
+            Files.copy(new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-001.pdf").toPath(), new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-004.pdf").toPath());
+            Files.copy(new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-001.pdf").toPath(), new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-005.pdf").toPath());
+            Files.copy(new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-001.pdf").toPath(), new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-008.pdf").toPath());
+            Files.copy(new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-002.pdf").toPath(), new File(outputFiles.get(1).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-003.pdf").toPath());
+            Files.copy(new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-002.pdf").toPath(), new File(outputFiles.get(1).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-006.pdf").toPath());
+            Files.copy(new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-002.pdf").toPath(), new File(outputFiles.get(1).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-007.pdf").toPath());
+            } catch (Exception exception){ System.out.println("Error Copying/Moving Files"); System.out.println(exception); }
+            
+            
             outputFiles.clear();
             selectedFiles.clear();
+            outputListView.getItems().clear();
+            
             return;
         } 
-        if (radio4to8.isSelected()){
+        if (radio4to8.isSelected() && !selectedFiles.isEmpty()){
+            
             outputFiles.get(6).renameTo(new File(outputFiles.get(6).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-007.pdf"));
             outputFiles.get(7).renameTo(new File(outputFiles.get(7).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-008.pdf"));
             outputFiles.get(0).renameTo(new File(outputFiles.get(7).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-001.pdf"));
@@ -143,5 +162,6 @@ public class SignatureHelperController implements Initializable {
             
             return;
         }
+        
     }
 }
