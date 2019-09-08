@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -50,13 +52,16 @@ public class SignatureHelperController implements Initializable {
                 fileChooser.setTitle("Open Resource File");
                 selectedFiles.addAll(fileChooser.showOpenMultipleDialog(SignatureHelper.homeStage));
                 Collections.sort(selectedFiles);
-                File currentPath = new File(selectedFiles.get(1).getPath());
+                File currentPath = new File(selectedFiles.get(0).getPath());
                 System.out.println("Current Path: " + currentPath.getPath());
                 System.out.println("Absolute Path: " + currentPath.getAbsolutePath());
                 System.out.println("Current Parent: " + currentPath.getParent());
-                selectedFilesListView.setItems(selectedFiles);
+                selectedFilesListView.setItems(selectedFiles);//This loads the Incoming Files List View with the selected files. 
                 populateOutputPreview();
                 //selectedFilesListView.setC.setCellValueFactory(new PropertyValueFactory(name));
+                if (validFilename(selectedFiles.get(0).getName())){
+                    System.out.println("Valid Filename");
+                } else {System.out.println("Not Valid Filename");}
     }
     
     public void populateOutputPreview(){
@@ -159,5 +164,10 @@ public class SignatureHelperController implements Initializable {
             return;
         }
         
+    }
+    public boolean validFilename(String matchMe){
+        String patternString = "(([A-Za-z0-9]+\\-[A-Za-z0-9]+)|([A-Za-z0-9]+))_0906_[A-Za-z0-9]+-[0-9]{3}.[A-Za-z0-9]+"; //PUBCODE-SECTION_0906_ZONE-001
+        Pattern pattern = Pattern.compile(patternString);
+        return Pattern.matches(patternString, matchMe);
     }
 }//End Class
