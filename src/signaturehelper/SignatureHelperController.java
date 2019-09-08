@@ -50,13 +50,21 @@ public class SignatureHelperController implements Initializable {
                 FileChooser fileChooser = new FileChooser();
                 selectedFiles.clear();
                 fileChooser.setTitle("Open Resource File");
-                selectedFiles.addAll(fileChooser.showOpenMultipleDialog(SignatureHelper.homeStage));
+                //List<File> incomingFiles = new ArrayList<>();
+                try {
+                    selectedFiles.addAll(fileChooser.showOpenMultipleDialog(SignatureHelper.homeStage));
+                } catch (Exception exception){
+                    System.out.println(exception.toString());
+                    return; //There are no files in the array - need to exit method
+                }
+
                 Collections.sort(selectedFiles);
                 File currentPath = new File(selectedFiles.get(0).getPath());
                 System.out.println("Current Path: " + currentPath.getPath());
                 System.out.println("Absolute Path: " + currentPath.getAbsolutePath());
                 System.out.println("Current Parent: " + currentPath.getParent());
-                selectedFilesListView.setItems(selectedFiles);//This loads the Incoming Files List View with the selected files. 
+                selectedFilesListView.setItems(selectedFiles);//This loads the Incoming Files List View with the selected files.
+                //if (selectedFiles.isEmpty()){return;}//If no files were selected, exit this method.
                 populateOutputPreview();
                 //selectedFilesListView.setC.setCellValueFactory(new PropertyValueFactory(name));
                 if (validFilename(selectedFiles.get(0).getName())){ //Populate the input fields with selected file name if it's valid
