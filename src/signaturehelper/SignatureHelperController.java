@@ -59,8 +59,16 @@ public class SignatureHelperController implements Initializable {
                 selectedFilesListView.setItems(selectedFiles);//This loads the Incoming Files List View with the selected files. 
                 populateOutputPreview();
                 //selectedFilesListView.setC.setCellValueFactory(new PropertyValueFactory(name));
-                if (validFilename(selectedFiles.get(0).getName())){
+                if (validFilename(selectedFiles.get(0).getName())){ //Populate the input fields with selected file name if it's valid
                     System.out.println("Valid Filename");
+                    String[] fileNamePart = selectedFiles.get(0).getName().split("\\_");
+                    System.out.println(fileNamePart[0]);
+                    System.out.println(fileNamePart[1]);
+                    String[] subNamePart = fileNamePart[2].split("\\-");
+                    System.out.println(subNamePart[0]);
+                    pubcodeField.setText(fileNamePart[0]);
+                    dateField.setText(fileNamePart[1]);
+                    zoneField.setText(subNamePart[0]);
                 } else {System.out.println("Not Valid Filename");}
     }
     
@@ -166,7 +174,7 @@ public class SignatureHelperController implements Initializable {
         
     }
     public boolean validFilename(String matchMe){
-        String patternString = "(([A-Za-z0-9]+\\-[A-Za-z0-9]+)|([A-Za-z0-9]+))_0906_[A-Za-z0-9]+-[0-9]{3}.[A-Za-z0-9]+"; //PUBCODE-SECTION_0906_ZONE-001
+        String patternString = "(([A-Za-z0-9]+\\-[A-Za-z0-9]+)|([A-Za-z0-9]+))_[0-9]{4}_[A-Za-z0-9]+-[0-9]{3}.[A-Za-z0-9]+"; //PUBCODE-SECTION_0906_ZONE-001
         Pattern pattern = Pattern.compile(patternString);
         return Pattern.matches(patternString, matchMe);
     }
