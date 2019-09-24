@@ -48,6 +48,7 @@ public class SignatureHelperController implements Initializable {
         radio2to16.setToggleGroup(group);
         radioSeqRen.setToggleGroup(group);
         radio4to8.setSelected(true);
+        radioSeqRen.setDisable(true);
     }    
     @FXML public void selectFiles(ActionEvent e){
                 
