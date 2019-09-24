@@ -31,6 +31,8 @@ public class SignatureHelperController implements Initializable {
     @FXML private ListView<String> outputListView;
     @FXML private RadioButton radio4to8;
     @FXML private RadioButton radio2to8;
+    @FXML private RadioButton radio2to16;
+    @FXML private RadioButton radioSeqRen;
     @FXML private TextField pubcodeField;
     @FXML private TextField dateField;
     @FXML private TextField zoneField;
@@ -43,6 +45,8 @@ public class SignatureHelperController implements Initializable {
         //selectedFilesListView
         radio4to8.setToggleGroup(group);
         radio2to8.setToggleGroup(group);
+        radio2to16.setToggleGroup(group);
+        radioSeqRen.setToggleGroup(group);
         radio4to8.setSelected(true);
     }    
     @FXML public void selectFiles(ActionEvent e){
@@ -60,12 +64,11 @@ public class SignatureHelperController implements Initializable {
 
                 Collections.sort(selectedFiles);
                 File currentPath = new File(selectedFiles.get(0).getPath());
-                System.out.println("Current Path: " + currentPath.getPath());
-                System.out.println("Absolute Path: " + currentPath.getAbsolutePath());
-                System.out.println("Current Parent: " + currentPath.getParent());
+//                System.out.println("Current Path: " + currentPath.getPath());
+//                System.out.println("Absolute Path: " + currentPath.getAbsolutePath());
+//                System.out.println("Current Parent: " + currentPath.getParent());
                 selectedFilesListView.setItems(selectedFiles);//This loads the Incoming Files List View with the selected files.
                 //if (selectedFiles.isEmpty()){return;}//If no files were selected, exit this method.
-                populateOutputPreview();
                 //selectedFilesListView.setC.setCellValueFactory(new PropertyValueFactory(name));
                 if (validFilename(selectedFiles.get(0).getName())){ //Populate the input fields with selected file name if it's valid
                     System.out.println("Valid Filename");
@@ -77,17 +80,24 @@ public class SignatureHelperController implements Initializable {
                     pubcodeField.setText(fileNamePart[0]);
                     dateField.setText(fileNamePart[1]);
                     zoneField.setText(subNamePart[0]);
-                } else {System.out.println("Not Valid Filename");}
+                } else {System.out.println("Not Valid Filename");
+                    pubcodeField.setText("PUBCODE");
+                    dateField.setText("DATE");
+                    zoneField.setText("ZONE");
+                }//End else
+                populateOutputPreview();
     }
     
     public void populateOutputPreview(){
         ObservableList<File> tempFiles = FXCollections.observableArrayList();
+        ObservableList<String> tempList = FXCollections.observableArrayList();
         tempFiles.setAll(selectedFiles);
         outputListView.getItems().clear();
         
+        
         if (radio2to8.isSelected() && !selectedFiles.isEmpty()){
             if (selectedFiles.size() == 2){
-                ObservableList<String> tempList = FXCollections.observableArrayList();
+                // <editor-fold defaultstate="collapsed" desc="2to8 IF body">
                 System.out.println("radio2to8 processing...");
                 outputFiles.clear();
                 ObservableList<String> tempList2 = FXCollections.observableArrayList();
@@ -108,14 +118,16 @@ public class SignatureHelperController implements Initializable {
                 tempList2.add(7, tempFiles.get(1).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-002.pdf");     
 
                 outputListView.setItems(tempList2);
+                // </editor-fold>
             }//End Nested If
             return;
         }//End If
         if (radio4to8.isSelected() && !selectedFiles.isEmpty()){
             if (selectedFiles.size() == 4){
+                // <editor-fold defaultstate="collapsed" desc="4to8 IF body">
                 System.out.println("radio4to8 processing...");
                 outputFiles.clear();
-                ObservableList<String> tempList = FXCollections.observableArrayList();
+                //ObservableList<String> tempList = FXCollections.observableArrayList();
 
                 outputFiles.add(0, tempFiles.get(0));
                 outputFiles.add(1, tempFiles.get(1));
@@ -132,15 +144,74 @@ public class SignatureHelperController implements Initializable {
                 tempList.add(7, tempFiles.get(3).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-008.pdf");     
 
                 outputListView.setItems(tempList);
+                // </editor-fold>
             }//End Nested If
             return;
         }
+        if (radio2to16.isSelected() && !selectedFiles.isEmpty()){ //***********Working
+            if (selectedFiles.size() == 2){
+                // <editor-fold defaultstate="collapsed" desc="2to16 IF body">
+                System.out.println("radio4to8 processing...");
+                outputFiles.clear();
+                //ObservableList<String> tempList = FXCollections.observableArrayList();
 
+                outputFiles.add(0, tempFiles.get(0));
+                outputFiles.add(1, tempFiles.get(1));
+
+                tempList.add(0, tempFiles.get(0).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-001.pdf"); 
+                tempList.add(1, tempFiles.get(1).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-002.pdf"); 
+                tempList.add(2, tempFiles.get(1).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-003.pdf"); 
+                tempList.add(3, tempFiles.get(0).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-004.pdf"); 
+                tempList.add(4, tempFiles.get(0).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-005.pdf"); 
+                tempList.add(5, tempFiles.get(1).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-006.pdf"); 
+                tempList.add(6, tempFiles.get(1).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-007.pdf"); 
+                tempList.add(7, tempFiles.get(0).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-008.pdf");     
+                tempList.add(8, tempFiles.get(0).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-009.pdf"); 
+                tempList.add(9, tempFiles.get(1).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-010.pdf"); 
+                tempList.add(10, tempFiles.get(1).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-011.pdf"); 
+                tempList.add(11, tempFiles.get(0).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-012.pdf"); 
+                tempList.add(12, tempFiles.get(0).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-013.pdf"); 
+                tempList.add(13, tempFiles.get(1).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-014.pdf"); 
+                tempList.add(14, tempFiles.get(1).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-015.pdf"); 
+                tempList.add(15, tempFiles.get(0).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-016.pdf"); 
+
+                outputListView.setItems(tempList);
+                // </editor-fold>
+            }//End Nested If
+            return;
+        }
+        if (radioSeqRen.isSelected() && !selectedFiles.isEmpty()){ //***********Copied, now change me
+            if (selectedFiles.size() == 4){
+                // <editor-fold defaultstate="collapsed" desc="SeqRen IF body">
+                System.out.println("radio4to8 processing...");
+                outputFiles.clear();
+                //ObservableList<String> tempList = FXCollections.observableArrayList();
+
+                outputFiles.add(0, tempFiles.get(0));
+                outputFiles.add(1, tempFiles.get(1));
+                outputFiles.add(2, tempFiles.get(2));
+                outputFiles.add(3, tempFiles.get(3));
+
+                tempList.add(0, tempFiles.get(0).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-001.pdf"); 
+                tempList.add(1, tempFiles.get(1).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-002.pdf"); 
+                tempList.add(2, tempFiles.get(1).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-003.pdf"); 
+                tempList.add(3, tempFiles.get(0).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-004.pdf"); 
+                tempList.add(4, tempFiles.get(3).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-005.pdf"); 
+                tempList.add(5, tempFiles.get(2).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-006.pdf"); 
+                tempList.add(6, tempFiles.get(2).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-007.pdf"); 
+                tempList.add(7, tempFiles.get(3).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-008.pdf");     
+
+                outputListView.setItems(tempList);
+                // </editor-fold>
+            }//End Nested If
+            return;
+        }        
         
     }
     @FXML public void changeFiles(ActionEvent e){
         
-        if (radio2to8.isSelected() && !selectedFiles.isEmpty()){
+        if (radio2to8.isSelected() && !selectedFiles.isEmpty() && !outputFiles.isEmpty()){
+            // <editor-fold defaultstate="collapsed" desc="2to8 IF body">
             outputFiles.get(0).renameTo(new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-001.pdf"));
             outputFiles.get(1).renameTo(new File(outputFiles.get(1).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-002.pdf"));
             try {
@@ -158,9 +229,10 @@ public class SignatureHelperController implements Initializable {
             outputListView.getItems().clear();
             
             return;
+            // </ editor-fold>
         } 
-        if (radio4to8.isSelected() && !selectedFiles.isEmpty()){
-            
+        if (radio4to8.isSelected() && !selectedFiles.isEmpty() && !outputFiles.isEmpty()){
+            // <editor-fold defaultstate="collapsed" desc="4to8 IF body">
             outputFiles.get(0).renameTo(new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-001.pdf"));
             outputFiles.get(1).renameTo(new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-002.pdf"));
             outputFiles.get(2).renameTo(new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-007.pdf"));
@@ -178,7 +250,62 @@ public class SignatureHelperController implements Initializable {
             outputListView.getItems().clear();
             
             return;
+            // </ editor-fold>
         }
+        if (radio2to16.isSelected() && !selectedFiles.isEmpty() && !outputFiles.isEmpty()){ //********* Working
+            // <editor-fold defaultstate="collapsed" desc="2to16 IF body">
+            outputFiles.get(0).renameTo(new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-001.pdf"));
+            outputFiles.get(1).renameTo(new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-002.pdf"));
+        
+            try {
+            //For the love of God, reduce this code with a Consumer, or Producer or something.     
+            Files.copy(new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-001.pdf").toPath(), new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-004.pdf").toPath());
+            Files.copy(new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-001.pdf").toPath(), new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-005.pdf").toPath());
+            Files.copy(new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-001.pdf").toPath(), new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-008.pdf").toPath());
+            Files.copy(new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-001.pdf").toPath(), new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-009.pdf").toPath());
+            Files.copy(new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-001.pdf").toPath(), new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-012.pdf").toPath());
+            Files.copy(new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-001.pdf").toPath(), new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-013.pdf").toPath());
+            Files.copy(new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-001.pdf").toPath(), new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-016.pdf").toPath());
+            //Readability Split
+            Files.copy(new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-002.pdf").toPath(), new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-003.pdf").toPath());
+            Files.copy(new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-002.pdf").toPath(), new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-006.pdf").toPath());
+            Files.copy(new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-002.pdf").toPath(), new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-007.pdf").toPath());
+            Files.copy(new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-002.pdf").toPath(), new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-010.pdf").toPath());
+            Files.copy(new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-002.pdf").toPath(), new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-011.pdf").toPath());
+            Files.copy(new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-002.pdf").toPath(), new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-014.pdf").toPath());            
+            Files.copy(new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-002.pdf").toPath(), new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-015.pdf").toPath());
+            
+            } catch (Exception exception){ System.out.println("Error Copying/Moving Files"); System.out.println(exception); }
+            
+            
+            outputFiles.clear();
+            selectedFiles.clear();
+            outputListView.getItems().clear();
+            
+            return;
+            // </ editor-fold>
+        }
+        if (radioSeqRen.isSelected() && !selectedFiles.isEmpty() && !outputFiles.isEmpty()){ //********* Copied, now change me
+            // <editor-fold defaultstate="collapsed" desc="SeqRen IF body">
+            outputFiles.get(0).renameTo(new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-001.pdf"));
+            outputFiles.get(1).renameTo(new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-002.pdf"));
+            outputFiles.get(2).renameTo(new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-007.pdf"));
+            outputFiles.get(3).renameTo(new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-008.pdf"));
+            try {
+            Files.copy(new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-001.pdf").toPath(), new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-004.pdf").toPath());
+            Files.copy(new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-002.pdf").toPath(), new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-003.pdf").toPath());
+            Files.copy(new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-007.pdf").toPath(), new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-006.pdf").toPath());
+            Files.copy(new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-008.pdf").toPath(), new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-005.pdf").toPath());
+            } catch (Exception exception){ System.out.println("Error Copying/Moving Files"); System.out.println(exception); }
+            
+            
+            outputFiles.clear();
+            selectedFiles.clear();
+            outputListView.getItems().clear();
+            
+            return;
+            // </ editor-fold>
+        }                
         
     }
     public boolean validFilename(String matchMe){
