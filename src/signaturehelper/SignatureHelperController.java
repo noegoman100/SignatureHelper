@@ -1,6 +1,7 @@
 package signaturehelper;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -25,6 +26,13 @@ import javafx.stage.FileChooser;
  * FXML Controller class
  *
  * @author Ed
+ * Please open the SignatureHelperView.fxml file in SceneBuilder to see the basics of what is going on.
+ * A radio button provides the choices for the file sorting behavior.
+ * Currently there is no drag and drop, or sorting from the list view. I will add it when I can.
+ *
+ * Future improvements - The name preview and final output sections should use the same sub-methods. There is a lot of repeat code.
+ * The sequential renamer section should make it possible to start with a number other than 1.
+ *
  */
 public class SignatureHelperController implements Initializable {
     @FXML private ListView<File> selectedFilesListView;
@@ -39,18 +47,23 @@ public class SignatureHelperController implements Initializable {
     private ToggleGroup group = new ToggleGroup();
     private ObservableList<File> outputFiles = FXCollections.observableArrayList();
     private ObservableList<File> selectedFiles = FXCollections.observableArrayList();
-    
+
+    //Below is basic initialization method - links the radio buttons into a group.
     @Override public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-        //selectedFilesListView
         radio4to8.setToggleGroup(group);
         radio2to8.setToggleGroup(group);
         radio2to16.setToggleGroup(group);
         radioSeqRen.setToggleGroup(group);
         radio4to8.setSelected(true);
-        radioSeqRen.setDisable(true);
+        //radioSeqRen.setDisable(true);
     }    
     @FXML public void selectFiles(ActionEvent e){
+        /** This method is the "Select Files" button in Scene Builder.
+         *  This provides a file selector popup. It sorts the files, and
+         *  loads the 'selectedFilesListView' observable list with the files.
+         *
+         *
+         */
                 
                 FileChooser fileChooser = new FileChooser();
                 selectedFiles.clear();
@@ -88,8 +101,15 @@ public class SignatureHelperController implements Initializable {
                 }//End else
                 populateOutputPreview();
     }
-    
+
+    //The method below only Previews the output of the files. (needed - fix repeat code in file renaming area)
     public void populateOutputPreview(){
+        /**
+         *
+         * This hosts the primary functionality of this application.
+         * Each radio button has an IF option below.
+         *
+         */
         ObservableList<File> tempFiles = FXCollections.observableArrayList();
         ObservableList<String> tempList = FXCollections.observableArrayList();
         tempFiles.setAll(selectedFiles);
@@ -181,27 +201,35 @@ public class SignatureHelperController implements Initializable {
             }//End Nested If
             return;
         }
-        if (radioSeqRen.isSelected() && !selectedFiles.isEmpty()){ //***********Copied, now change me
-            if (selectedFiles.size() == 4){
+        if (radioSeqRen.isSelected() && !selectedFiles.isEmpty()){ //***********Implementation in progress
+            if (selectedFiles.size() > 0){ //This IF statement may not be needed
                 // <editor-fold defaultstate="collapsed" desc="SeqRen IF body">
-                System.out.println("radio4to8 processing...");
-                outputFiles.clear();
+                System.out.println("sequential renaming processing...");
+                outputFiles.clear(); //Clear the list if other options were selected prior.
                 //ObservableList<String> tempList = FXCollections.observableArrayList();
 
+                /**
                 outputFiles.add(0, tempFiles.get(0));
                 outputFiles.add(1, tempFiles.get(1));
                 outputFiles.add(2, tempFiles.get(2));
                 outputFiles.add(3, tempFiles.get(3));
 
-                tempList.add(0, tempFiles.get(0).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-001.pdf"); 
-                tempList.add(1, tempFiles.get(1).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-002.pdf"); 
-                tempList.add(2, tempFiles.get(1).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-003.pdf"); 
-                tempList.add(3, tempFiles.get(0).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-004.pdf"); 
-                tempList.add(4, tempFiles.get(3).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-005.pdf"); 
-                tempList.add(5, tempFiles.get(2).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-006.pdf"); 
-                tempList.add(6, tempFiles.get(2).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-007.pdf"); 
-                tempList.add(7, tempFiles.get(3).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-008.pdf");     
+                tempList.add(0, tempFiles.get(0).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-001.pdf");
+                tempList.add(1, tempFiles.get(1).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-002.pdf");
+                tempList.add(2, tempFiles.get(1).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-003.pdf");
+                tempList.add(3, tempFiles.get(0).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-004.pdf");
+                tempList.add(4, tempFiles.get(3).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-005.pdf");
+                tempList.add(5, tempFiles.get(2).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-006.pdf");
+                tempList.add(6, tempFiles.get(2).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-007.pdf");
+                tempList.add(7, tempFiles.get(3).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-008.pdf");
+                */
 
+                FXCollections.sort(tempFiles);
+                for(int i = 0; i < tempFiles.size(); i++) {
+                    outputFiles.add(i, tempFiles.get(i));
+                    tempList.add(i, tempFiles.get(i).getName() + " to \\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-001.pdf FIX ME");
+                    //Needs text formatting at the end, to ensure 3 digits in number
+                }
                 outputListView.setItems(tempList);
                 // </editor-fold>
             }//End Nested If
@@ -209,6 +237,8 @@ public class SignatureHelperController implements Initializable {
         }        
         
     }
+
+    //Below is the method that actually copies and renames the files.
     @FXML public void changeFiles(ActionEvent e){
         
         if (radio2to8.isSelected() && !selectedFiles.isEmpty() && !outputFiles.isEmpty()){
@@ -288,18 +318,15 @@ public class SignatureHelperController implements Initializable {
         }
         if (radioSeqRen.isSelected() && !selectedFiles.isEmpty() && !outputFiles.isEmpty()){ //********* Copied, now change me
             // <editor-fold defaultstate="collapsed" desc="SeqRen IF body">
-            outputFiles.get(0).renameTo(new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-001.pdf"));
-            outputFiles.get(1).renameTo(new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-002.pdf"));
-            outputFiles.get(2).renameTo(new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-007.pdf"));
-            outputFiles.get(3).renameTo(new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-008.pdf"));
-            try {
-            Files.copy(new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-001.pdf").toPath(), new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-004.pdf").toPath());
-            Files.copy(new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-002.pdf").toPath(), new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-003.pdf").toPath());
-            Files.copy(new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-007.pdf").toPath(), new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-006.pdf").toPath());
-            Files.copy(new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-008.pdf").toPath(), new File(outputFiles.get(0).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-005.pdf").toPath());
-            } catch (Exception exception){ System.out.println("Error Copying/Moving Files"); System.out.println(exception); }
-            
-            
+
+            //Below renames the selected files in Sequential Order.
+            for (int i = 0; i < outputFiles.size(); i++){
+                outputFiles.get(i).renameTo(new File(outputFiles.get(i).getParent() + "\\" + pubcodeField.getText() + "_" + dateField.getText() + "_" + zoneField.getText() + "-00" + i + ".pdf"));
+                //Needs a Format to ensure suffix number remains 3 digits.
+                //Make sure this does not start with 0 in the filename - needs to start with one (Or better yet, have a choice to start with any number)
+                //This renaming section works, but the preview of the names, and this output area should be one method - not two nearly identical sections.
+            }
+
             outputFiles.clear();
             selectedFiles.clear();
             outputListView.getItems().clear();
@@ -309,6 +336,8 @@ public class SignatureHelperController implements Initializable {
         }                
         
     }
+
+    //Below is a method that checks to see if a selected file name is valid, as per PuzzleFlow's naming conventions
     public boolean validFilename(String matchMe){
         String patternString = "(([A-Za-z0-9]+\\-[A-Za-z0-9]+)|([A-Za-z0-9]+))_[0-9]{4}_[A-Za-z0-9]+-[0-9]{3}.[A-Za-z0-9]+"; //PUBCODE-SECTION_0906_ZONE-001
         Pattern pattern = Pattern.compile(patternString);

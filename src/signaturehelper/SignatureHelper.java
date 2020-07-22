@@ -26,6 +26,7 @@ import javafx.stage.Stage;
 /**
  *
  * @author Ed
+ * The bulk of this application's functionality resides inside SignatureHelperController.java.
  */
 public class SignatureHelper extends Application {
     public static Scene homeScene;
